@@ -1,4 +1,4 @@
-package se.viia.quest.auth;
+package se.viia.quest.auth.token;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;

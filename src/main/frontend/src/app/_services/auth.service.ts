@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import 'rxjs/add/operator/do'
 import * as jwt_decode from "jwt-decode";
+import {AuthResponse} from "../_models/auth.response";
 
 const ACCESS_TOKEN_NAME: string = "access_token";
 
@@ -16,7 +17,7 @@ export class AuthService {
       .set('X-Requested-With', 'XMLHttpRequest')
       .set('Content-Type', 'application/json')
       .set('Cache-Control', 'no-cache');
-    return this.http.post('/auth/login', JSON.stringify({
+    return this.http.post<AuthResponse>('/auth/login', JSON.stringify({
       username: username,
       password: password
     }), {headers: headers})

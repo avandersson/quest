@@ -1,4 +1,4 @@
-package se.viia.quest.auth;
+package se.viia.quest.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import se.viia.quest.account.AccountService;
+import se.viia.quest.auth.filter.JwtAuthenticationFilter;
+import se.viia.quest.auth.provider.RefreshAuthProvider;
+import se.viia.quest.auth.token.TokenHandler;
 import se.viia.quest.util.SecurityUtils;
 
 /**
@@ -23,10 +26,12 @@ import se.viia.quest.util.SecurityUtils;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AccountService accountService;
+    private final TokenHandler tokenHandler;
 
     @Autowired
-    public SecurityConfig(AccountService accountService) {
+    public SecurityConfig(AccountService accountService, TokenHandler tokenHandler) {
         this.accountService = accountService;
+        this.tokenHandler = tokenHandler;
     }
 
     @Override
@@ -42,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilterBefore(new JwtAuthenticationFilter(new AntPathRequestMatcher("/api/**")), UsernamePasswordAuthenticationFilter.class);
-//        http.authenticationProvider();
+        http.addFilterBefore(new JwtAuthenticationFilter(new AntPathRequestMatcher("/api/**"), tokenHandler), UsernamePasswordAuthenticationFilter.class);
+        http.authenticationProvider(new RefreshAuthProvider(tokenHandler, accountService));
 //        http.exceptionHandling().authenticationEntryPoint();
     }
 

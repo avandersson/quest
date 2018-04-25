@@ -1,4 +1,4 @@
-package se.viia.quest.auth;
+package se.viia.quest.auth.filter;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -7,6 +7,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.GenericFilterBean;
+import se.viia.quest.auth.key.KeyHandler;
+import se.viia.quest.auth.token.Token;
+import se.viia.quest.auth.token.TokenHandler;
 import se.viia.quest.exception.InvalidTokenException;
 
 import javax.servlet.FilterChain;
@@ -24,11 +27,16 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class JwtAuthenticationFilter extends GenericFilterBean {
     private static final Logger LOG = getLogger(JwtAuthenticationFilter.class);
     private static final String AUTHORIZATION_HEADER = "Authorization";
-    private final AntPathRequestMatcher requestMatcher;
 
-    public JwtAuthenticationFilter(AntPathRequestMatcher requestMatcher) {
+    private final AntPathRequestMatcher requestMatcher;
+    private final TokenHandler tokenHandler;
+
+
+    public JwtAuthenticationFilter(AntPathRequestMatcher requestMatcher, TokenHandler tokenHandler) {
         Preconditions.checkArgument(requestMatcher != null, "Argument requestMatcher should no be null!");
+        Preconditions.checkArgument(tokenHandler != null, "Argument tokenHandler should no be null!");
         this.requestMatcher = requestMatcher;
+        this.tokenHandler = tokenHandler;
     }
 
     @Override
@@ -48,7 +56,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
 
         try {
-            Token token = TokenHandler.validateAndGet(accessToken);
+            Token token = tokenHandler.validateAndGet(accessToken);
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(token.getUsername(), "", token.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authToken);
             filterChain.doFilter(request, response);
