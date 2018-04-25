@@ -1,0 +1,27 @@
+<!--<form [formGroup]="loginForm" (ngSubmit)="login(loginForm)">-->
+  <!--<div class="form-group">-->
+    <!--<label>Name:-->
+      <!--<input type="text" class="form-control" formControlName="username">-->
+    <!--</label>-->
+  <!--</div>-->
+  <!--<div class="form-group">-->
+    <!--<label>Name:-->
+      <!--<input type="password" class="form-control" formControlName="password">-->
+    <!--</label>-->
+  <!--</div>-->
+
+  <!--<button type="submit" class="btn btn-success">Submit</button>-->
+<!--</form>-->
+
+
+
+<form class="sign_in_form" (ngSubmit)="f.form.valid && login()" #f="ngForm">
+  <label>Användarnamn:</label>
+  <input class="sign_in_user_input" type="text" name="username" [(ngModel)]="model.username">
+  <label>Lösenord:</label>
+  <input class="sign_in_password_input" type="password" name="password" [(ngModel)]="model.password">
+  <div class="login-error" *ngIf="loginError">
+    Misslyckad inloggning! Felaktigt användarnamn eller lösenord.
+  </div>
+  <input id="sign_in_submit_input" class="sign_in_submit_input" type="submit" value="Logga in">
+</form>

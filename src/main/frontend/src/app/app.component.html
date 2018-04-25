@@ -1,0 +1,38 @@
+<div class="container-fluid pr-0 pl-0" style="background-color: #e3f2fd;">
+  <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark mb-3">
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" [ngbCollapse]="isCollapsed">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="navbar-brand" href="#">Que? est!</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Quests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Achievements</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Admin</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li>
+          <span class="navbar-text" style="font-style: italic">{{user}}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <router-outlet></router-outlet>
+  </div>
+</div>
