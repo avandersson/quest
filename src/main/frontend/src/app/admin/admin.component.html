@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">Username</th>
+    <th scope="col">Authorities</th>
+    <th scope="col">Active</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let account of accounts;">
+    <th>{{account.name}}</th>
+    <td>{{account.username}}</td>
+    <td>{{account.authorities.join(', ')}}</td>
+    <td>{{account.active}}</td>
+  </tr>
+  </tbody>
+</table>

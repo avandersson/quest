@@ -85,4 +85,8 @@ public class TokenHandler {
         refreshToken.setRevoked(true);
         tokenStore.save(refreshToken);
     }
+
+    public Iterable<RefreshToken> getRefreshTokens() {
+        return tokenStore.findAll();
+    }
 }

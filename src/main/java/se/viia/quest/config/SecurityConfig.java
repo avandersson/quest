@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import se.viia.quest.account.AccountService;
+import se.viia.quest.auth.BasicAuthenticationEntryPoint;
 import se.viia.quest.auth.filter.JwtAuthenticationFilter;
 import se.viia.quest.auth.provider.RefreshAuthProvider;
 import se.viia.quest.auth.token.TokenHandler;
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh").permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
@@ -49,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(new JwtAuthenticationFilter(new AntPathRequestMatcher("/api/**"), tokenHandler), UsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(new RefreshAuthProvider(tokenHandler, accountService));
-//        http.exceptionHandling().authenticationEntryPoint();
+        http.exceptionHandling().authenticationEntryPoint(new BasicAuthenticationEntryPoint("JWT based login."));
     }
 
     @Override

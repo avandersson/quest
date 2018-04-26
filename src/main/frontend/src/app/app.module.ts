@@ -13,13 +13,16 @@ import {FormsModule} from "@angular/forms";
 import {AuthService} from "./_services/auth.service";
 import {AuthGuard} from "./_guards/auth.guard";
 import {AuthInterceptorProvider} from "./_interceptors/auth.interceptor";
+import { AdminComponent } from './admin/admin.component';
+import {AdminService} from "./admin/admin.service";
 
 
 @NgModule({
   declarations: [
     AppComponent,
     QuestComponent,
-    LoginComponent
+    LoginComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ import {AuthInterceptorProvider} from "./_interceptors/auth.interceptor";
     QuestService,
     AuthService,
     AuthGuard,
+    AdminService,
     AuthInterceptorProvider
   ],
   bootstrap: [AppComponent]
